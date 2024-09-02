@@ -14,6 +14,10 @@ public:
     bool Login( const QString& id, const QString& password );
     bool IsLogin();
     const FxUser GetUser();
+    bool CheckUser( const QString& id );
+    bool AddUser( const QString& id );
+    FxUser FindUser( const QString& id );
+    const QList<FxUser> GetUsers();
 
     QWidget* GetControlWidget();
 signals:

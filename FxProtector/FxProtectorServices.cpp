@@ -1,5 +1,6 @@
-#include "FxProtectorServices.h"
+﻿#include "FxProtectorServices.h"
 #include "FxRounedButton.h"
+#include "FxMessageBox.h"
 #include "FxProtectDialog.h"
 
 #include <QCoreApplication>
@@ -24,8 +25,11 @@ FxProtectorServices::~FxProtectorServices()
 
 void FxProtectorServices::Logout()
 {
-    m_User = FxUser();
-    emit LoginChanged( m_User );
+    if ( FxMessageBox( "Bạn có chắc chắn muốn đăng xuất không ?", "Khoan đã", FxMessageBox::Question, FxMessageBox::Yes | FxMessageBox::No ).exec() == FxMessageBox::Yes )
+    {
+        m_User = FxUser();
+        emit LoginChanged( m_User );
+    }
 }
 
 bool FxProtectorServices::Login( const QString& id, const QString& password )
@@ -43,6 +47,26 @@ bool  FxProtectorServices::IsLogin()
 const FxUser FxProtectorServices::GetUser()
 {
     return m_User;
+}
+
+bool FxProtectorServices::CheckUser( const QString& id )
+{
+    return true;
+}
+
+bool FxProtectorServices::AddUser( const QString& id )
+{
+    return false;
+}
+
+FxUser FxProtectorServices::FindUser( const QString& id )
+{
+    return {};
+}
+
+const QList<FxUser> FxProtectorServices::GetUsers()
+{
+    return {};
 }
 
 void FxProtectorServices::OnLoginOrLogout()
@@ -69,29 +93,9 @@ QWidget* FxProtectorServices::GetControlWidget()
         m_controlWidget = button;
     }
 
-    button->setText( "User");
+    button->setText( "User" );
     return m_controlWidget;
 }
-//
-//void FxThemeServices::OnNextTheme()
-//{
-//    QMap<int, FxTheme> themes = Availableds();
-//    if ( themes.size() < 1 )
-//        return;
-//
-//    for ( auto it = themes.begin(); it != themes.end(); it++ )
-//    {
-//        if ( it.value().GetName() == m_themeData.GetName() )
-//        {
-//            int nextIndex = it.key() + 1;
-//            if ( !themes.contains( nextIndex ) )
-//                nextIndex = 0;
-//            SetTheme( themes[ nextIndex ].GetName() );
-//            GetControlWidget();
-//            break;
-//        }
-//    }
-//}
 
 FxProtectorServices* GetProtectorServices()
 {
